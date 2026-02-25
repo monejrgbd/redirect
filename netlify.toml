@@ -1,3 +1,3 @@
 [build]
-  command = "echo 'no build needed'"
-  publish = "."
+  command = "bun run build"
+  publish = "dist"
