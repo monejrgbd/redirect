@@ -7,90 +7,343 @@
   <meta http-equiv="refresh" content="3;url=https://veldsystems.com">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #050505;
+      background: #030308;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       color: #fff;
       overflow: hidden;
     }
+
+    /* Ambient background orbs */
+    .bg-orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0;
+      animation: orbFloat 8s ease-in-out infinite, orbFadeIn 2s ease forwards;
+    }
+    .bg-orb:nth-child(1) {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(0, 100, 255, 0.15), transparent 70%);
+      top: -15%; left: -10%;
+      animation-delay: 0s;
+    }
+    .bg-orb:nth-child(2) {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(0, 180, 255, 0.1), transparent 70%);
+      bottom: -10%; right: -5%;
+      animation-delay: 3s;
+    }
+    .bg-orb:nth-child(3) {
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(80, 60, 255, 0.12), transparent 70%);
+      top: 50%; left: 60%;
+      animation-delay: 5s;
+    }
+
+    @keyframes orbFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(30px, -20px) scale(1.05); }
+      66% { transform: translate(-20px, 15px) scale(0.95); }
+    }
+    @keyframes orbFadeIn {
+      to { opacity: 1; }
+    }
+
+    /* Noise texture overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    /* Grid lines */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0, 100, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 100, 255, 0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%);
+      -webkit-mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%);
+    }
+
     .container {
       text-align: center;
+      position: relative;
+      z-index: 10;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: contentIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
     }
-    p {
-      margin-bottom: 32px;
-      color: #555;
-      font-size: 13px;
-      letter-spacing: 0.5px;
+    @keyframes contentIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Logo mark */
+    .logo {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 28px;
+      position: relative;
+      opacity: 0;
+      animation: logoIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+    }
+    @keyframes logoIn {
+      0% { opacity: 0; transform: scale(0.5) rotate(-10deg); }
+      100% { opacity: 1; transform: scale(1) rotate(0deg); }
+    }
+    .logo svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .subtitle {
+      margin-bottom: 12px;
+      color: rgba(255, 255, 255, 0.3);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 3px;
       text-transform: uppercase;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.5s forwards;
     }
-    .btn {
+
+    .timer-bar-track {
+      width: 160px;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 2px;
+      margin: 0 auto 40px;
+      overflow: hidden;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.6s forwards;
+    }
+    .timer-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #0066ff, #00bbff);
+      border-radius: 2px;
+      animation: timerFill 3s linear 0.8s forwards;
+      box-shadow: 0 0 8px rgba(0, 120, 255, 0.6);
+    }
+    @keyframes timerFill {
+      to { width: 100%; }
+    }
+
+    @keyframes fadeUp {
+      0% { opacity: 0; transform: translateY(8px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Button */
+    @keyframes borderRotate {
+      to { --angle: 360deg; }
+    }
+
+    .btn-outer {
       position: relative;
       display: inline-block;
-      padding: 16px 48px;
-      background: linear-gradient(135deg, #fff 0%, #e0e0e0 100%);
-      color: #0a0a0a;
-      text-decoration: none;
-      font-size: 15px;
-      font-weight: 700;
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-      border-radius: 50px;
-      box-shadow:
-        0 0 20px rgba(255, 255, 255, 0.08),
-        0 4px 15px rgba(0, 0, 0, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.6);
-      transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      overflow: hidden;
-      z-index: 1;
+      border-radius: 60px;
+      padding: 1.5px;
+      background: conic-gradient(from var(--angle, 0deg), #0066ff, #00ccff, #3344ff, #0088ff, #0066ff);
+      animation: spin 4s linear infinite;
+      opacity: 0;
+      transform: translateY(8px);
+      animation: fadeUp 0.8s ease 0.7s forwards, spin 4s linear infinite;
     }
+    @keyframes spin {
+      to { --angle: 360deg; }
+    }
+
+    /* Fallback for browsers without @property */
+    .btn-outer {
+      background: linear-gradient(270deg, #0066ff, #00ccff, #3344ff, #0088ff, #0066ff);
+      background-size: 300% 300%;
+      animation: fadeUp 0.8s ease 0.7s forwards, gradientShift 4s ease infinite;
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .btn-outer::before {
+      content: '';
+      position: absolute;
+      inset: -8px;
+      border-radius: 68px;
+      background: linear-gradient(270deg, #0066ff, #00ccff, #3344ff, #0088ff);
+      background-size: 300% 300%;
+      animation: gradientShift 4s ease infinite;
+      filter: blur(20px);
+      opacity: 0.35;
+      z-index: -1;
+      transition: opacity 0.4s ease, filter 0.4s ease;
+    }
+    .btn-outer:hover::before {
+      opacity: 0.7;
+      filter: blur(28px);
+    }
+
+    .btn {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 44px;
+      background: rgba(8, 8, 20, 0.95);
+      color: #fff;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      border-radius: 60px;
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+
     .btn::before {
       content: '';
       position: absolute;
       top: 0;
-      left: -100%;
-      width: 100%;
+      left: -120%;
+      width: 80%;
       height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-      transition: left 0.5s ease;
-      z-index: -1;
+      background: linear-gradient(90deg, transparent, rgba(0, 140, 255, 0.15), transparent);
+      transition: none;
+      animation: btnShimmer 4s ease-in-out 1.5s infinite;
     }
+    @keyframes btnShimmer {
+      0% { left: -120%; }
+      40% { left: 120%; }
+      100% { left: 120%; }
+    }
+
     .btn:hover {
-      transform: translateY(-2px);
-      box-shadow:
-        0 0 30px rgba(255, 255, 255, 0.15),
-        0 8px 25px rgba(0, 0, 0, 0.5),
-        inset 0 1px 0 rgba(255, 255, 255, 0.6);
-    }
-    .btn:hover::before {
-      left: 100%;
+      background: linear-gradient(135deg, rgba(0, 60, 180, 0.9), rgba(0, 100, 255, 0.8));
+      transform: translateY(-3px) scale(1.02);
+      letter-spacing: 1.6px;
     }
     .btn:active {
-      transform: translateY(0px);
-      box-shadow:
-        0 0 15px rgba(255, 255, 255, 0.06),
-        0 2px 8px rgba(0, 0, 0, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+      transform: translateY(0) scale(0.98);
     }
+
     .btn .arrow {
-      display: inline-block;
-      margin-left: 10px;
+      display: inline-flex;
       transition: transform 0.3s ease;
     }
     .btn:hover .arrow {
       transform: translateX(4px);
     }
+
+    .arrow svg {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      stroke-width: 2;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* Bottom text */
+    .footer {
+      margin-top: 48px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 1s forwards;
+    }
+    .footer span {
+      color: rgba(255, 255, 255, 0.12);
+      font-size: 11px;
+      letter-spacing: 1px;
+      font-weight: 400;
+    }
+
+    /* Floating particles */
+    .particle {
+      position: fixed;
+      width: 2px;
+      height: 2px;
+      background: rgba(0, 130, 255, 0.4);
+      border-radius: 50%;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
+  <div class="bg-orb"></div>
+  <div class="bg-orb"></div>
+  <div class="bg-orb"></div>
+
   <div class="container">
-    <p>Redirecting to veldsystems.com...</p>
-    <a href="https://veldhq.com" class="btn">Head to site <span class="arrow">&rarr;</span></a>
+    <div class="logo">
+      <svg viewBox="0 0 48 48" fill="none">
+        <path d="M24 4L8 14v20l16 10 16-10V14L24 4z" stroke="url(#g1)" stroke-width="1.5" fill="none" opacity="0.6"/>
+        <path d="M24 8L12 16v16l12 8 12-8V16L24 8z" stroke="url(#g1)" stroke-width="1" fill="none" opacity="0.3"/>
+        <path d="M24 16v16M16 20l8 4 8-4M16 28l8 4 8-4" stroke="url(#g1)" stroke-width="1.5" stroke-linecap="round" opacity="0.8"/>
+        <defs>
+          <linearGradient id="g1" x1="8" y1="4" x2="40" y2="44">
+            <stop offset="0%" stop-color="#0066ff"/>
+            <stop offset="100%" stop-color="#00ccff"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+
+    <p class="subtitle">Redirecting to veldsystems.com</p>
+
+    <div class="timer-bar-track">
+      <div class="timer-bar-fill"></div>
+    </div>
+
+    <div class="btn-outer">
+      <a href="https://veldhq.com" class="btn">
+        Head to site
+        <span class="arrow">
+          <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </span>
+      </a>
+    </div>
+
+    <div class="footer">
+      <span>veld systems</span>
+    </div>
   </div>
+
   <script>
+    // Floating particles
+    (function() {
+      var body = document.body;
+      for (var i = 0; i < 30; i++) {
+        var p = document.createElement('div');
+        p.className = 'particle';
+        p.style.left = Math.random() * 100 + 'vw';
+        p.style.top = Math.random() * 100 + 'vh';
+        p.style.width = p.style.height = (Math.random() * 2 + 1) + 'px';
+        p.style.opacity = Math.random() * 0.4 + 0.1;
+        p.style.animation = 'particleFloat ' + (Math.random() * 6 + 4) + 's ease-in-out infinite ' + (Math.random() * 4) + 's';
+        body.appendChild(p);
+      }
+
+      var style = document.createElement('style');
+      style.textContent = '@keyframes particleFloat { 0%, 100% { transform: translate(0, 0); opacity: var(--o, 0.3); } 25% { transform: translate(' + (Math.random()*30-15) + 'px, -' + (Math.random()*40+20) + 'px); } 50% { transform: translate(' + (Math.random()*20-10) + 'px, -' + (Math.random()*60+30) + 'px); opacity: 0.6; } 75% { transform: translate(' + (Math.random()*30-15) + 'px, -' + (Math.random()*40+10) + 'px); } }';
+      document.head.appendChild(style);
+    })();
+
     setTimeout(function() {
       window.location.href = "https://veldsystems.com";
     }, 3000);
