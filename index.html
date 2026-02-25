@@ -12,38 +12,83 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #0a0a0a;
+      background: #050505;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       color: #fff;
+      overflow: hidden;
     }
     .container {
       text-align: center;
     }
     p {
-      margin-bottom: 24px;
-      color: #888;
-      font-size: 14px;
+      margin-bottom: 32px;
+      color: #555;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
     }
     .btn {
+      position: relative;
       display: inline-block;
-      padding: 14px 36px;
-      background: #fff;
+      padding: 16px 48px;
+      background: linear-gradient(135deg, #fff 0%, #e0e0e0 100%);
       color: #0a0a0a;
       text-decoration: none;
-      font-size: 16px;
-      font-weight: 600;
-      border-radius: 8px;
-      transition: opacity 0.2s;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      border-radius: 50px;
+      box-shadow:
+        0 0 20px rgba(255, 255, 255, 0.08),
+        0 4px 15px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+      transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      overflow: hidden;
+      z-index: 1;
+    }
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      transition: left 0.5s ease;
+      z-index: -1;
     }
     .btn:hover {
-      opacity: 0.85;
+      transform: translateY(-2px);
+      box-shadow:
+        0 0 30px rgba(255, 255, 255, 0.15),
+        0 8px 25px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    }
+    .btn:hover::before {
+      left: 100%;
+    }
+    .btn:active {
+      transform: translateY(0px);
+      box-shadow:
+        0 0 15px rgba(255, 255, 255, 0.06),
+        0 2px 8px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
+    .btn .arrow {
+      display: inline-block;
+      margin-left: 10px;
+      transition: transform 0.3s ease;
+    }
+    .btn:hover .arrow {
+      transform: translateX(4px);
     }
   </style>
 </head>
 <body>
   <div class="container">
     <p>Redirecting to veldsystems.com...</p>
-    <a href="https://veldhq.com" class="btn">Head to site</a>
+    <a href="https://veldhq.com" class="btn">Head to site <span class="arrow">&rarr;</span></a>
   </div>
   <script>
     setTimeout(function() {
