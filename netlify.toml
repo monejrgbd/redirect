@@ -3,9 +3,6 @@
   publish = "dist"
 
 [[redirects]]
-  from = "/*"
+  from = "/book"
   to = "/schedule.html"
   status = 200
-  force = true
-  [redirects.conditions]
-    Host = "schedule.veldhq.com"
