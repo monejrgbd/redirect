@@ -2,6 +2,6 @@
   "name": "redirect",
   "private": true,
   "scripts": {
-    "build": "mkdir -p dist && cp index.html schedule.html dist/"
+    "build": "mkdir -p dist dist/book && cp index.html dist/ && cp schedule.html dist/book/index.html"
   }
 }

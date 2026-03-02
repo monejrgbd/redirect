@@ -2,7 +2,3 @@
   command = "bun run build"
   publish = "dist"
 
-[[redirects]]
-  from = "/book"
-  to = "/schedule.html"
-  status = 200
