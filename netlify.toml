@@ -1,3 +1,11 @@
 [build]
   command = "bun run build"
   publish = "dist"
+
+[[redirects]]
+  from = "/*"
+  to = "/schedule.html"
+  status = 200
+  force = true
+  [redirects.conditions]
+    Host = "schedule.veldhq.com"
