@@ -2,3 +2,20 @@
   command = "bun run build"
   publish = "dist"
 
+[[redirects]]
+  from = "/"
+  to = "https://veldsystems.com"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/book"
+  to = "https://cal.com/102937474/veld-systems-meeting"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/book/*"
+  to = "https://cal.com/102937474/veld-systems-meeting"
+  status = 302
+  force = true
