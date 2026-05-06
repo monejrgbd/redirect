@@ -19,3 +19,15 @@
   to = "https://cal.com/102937474/veld-systems-meeting"
   status = 302
   force = true
+
+[[redirects]]
+  from = "/affiliate"
+  to = "https://veldsystems.com/affiliate"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/affiliate/*"
+  to = "https://veldsystems.com/affiliate"
+  status = 302
+  force = true
